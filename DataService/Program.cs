@@ -1,3 +1,4 @@
+using DataService;
 using DataService.Data;
 using DataService.Interfaces;
 using DataService.Services;
@@ -14,10 +15,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IDealService, DealService>();
 builder.Services.AddDbContext<ApplicationContext>(options =>
-        options.UseMySql(builder.Configuration
-        .GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 11))
-    ));
+        options.UseNpgsql(builder.Configuration
+        .GetConnectionString("DefaultConnection"))
+    );
 
 var app = builder.Build();
 
