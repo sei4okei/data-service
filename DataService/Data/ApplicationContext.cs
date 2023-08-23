@@ -5,7 +5,7 @@ namespace DataService.Data
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<Deal> Deal { get; set; }
+        public DbSet<Deal> Deals { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
