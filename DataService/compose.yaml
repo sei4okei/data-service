@@ -1,0 +1,40 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  dataservice:
+    image: docker.io/library/dataservice
+    depends_on:
+      - "dataserver"
+    container_name: dataservice-container
+    ports:
+      - "8088:80"
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=dataserver;Port=5432;Database=Deals;IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - dev
+
+  dataserver:
+    image: postgres:latest
+    container_name: dataserver
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=Deals
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - app_data:/volumes/
+    networks:
+      - dev
+    
+volumes:
+  app_data:
